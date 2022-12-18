@@ -18,8 +18,7 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!contacts.length) {
-      console.log('return');
+    if (!contacts.length) {___
       return;
     }
     localStorage.setItem('contacts', JSON.stringify(contacts));

@@ -2,11 +2,9 @@ import React from 'react';
 import css from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 import { Form, Formik, Field } from 'formik';
-import { nanoid } from 'nanoid';
 
 export const ContactForm = ({ onSubmit }) => {
   const handleSubmit = (value, { resetForm }) => {
-    value.id = nanoid();
     onSubmit(value);
     resetForm();
   };
