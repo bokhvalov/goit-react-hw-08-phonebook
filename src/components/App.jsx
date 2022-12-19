@@ -1,47 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Section } from './Section/Section';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './ContactList/Filter';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, deleteContact } from 'redux/contactsSlice';
+import { changeFilter } from 'redux/filterSlice';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      const localStorageState = JSON.parse(localStorage.getItem('contacts'));
-      if (localStorageState.length) {
-        setContacts(localStorageState);
-      }
-    }
-  }, []);
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter.value);
 
-  useEffect(() => {
-    if (!contacts.length) {___
-      return;
-    }
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-
-
-
-  const submitHandler = newContact => {
-    const ContactExist = contacts.find(
-      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
-    );
-
-    if (ContactExist) {
-      alert(newContact.name + ' is already in contacts.');
-      return;
-    }
-    setContacts([...contacts, newContact]);
-  };
-
-
-
-  const generateContactList = () => {
+  const getVisibleContacts = (contacts, filter) => {
     let contactsList;
 
     if (filter) {
@@ -55,14 +27,6 @@ export const App = () => {
   };
 
 
-
-  const deleteContact = contactID => {
-    const newArray = contacts.filter(contact => contact.id !== contactID);
-    setContacts(newArray);
-  };
-
-
-
   return (
     <div
       style={{
@@ -71,14 +35,14 @@ export const App = () => {
       }}
     >
       <Section title={'Phonebook'}>
-        <ContactForm onSubmit={contact => submitHandler(contact)} />
+        <ContactForm onSubmit={contact => dispatch(addContact(contact))} />
       </Section>
 
       <Section title={'Contacts'}>
-        <Filter onChange={value => setFilter(value)} />
+        <Filter onChange={value => dispatch(changeFilter(value))} />
         <ContactList
-          contacts={generateContactList()}
-          onClickDelete={contactID => deleteContact(contactID)}
+          contacts={getVisibleContacts(contacts,filter)}
+          onClickDelete={contactID => dispatch(deleteContact(contactID))}
         />
       </Section>
     </div>
