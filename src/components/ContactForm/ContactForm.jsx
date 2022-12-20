@@ -1,11 +1,14 @@
 import React from 'react';
 import css from './ContactForm.module.css';
-import PropTypes from 'prop-types';
 import { Form, Formik, Field } from 'formik';
+import { addContact } from 'redux/contactsSlice';
+import { useDispatch } from 'react-redux';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+
   const handleSubmit = (value, { resetForm }) => {
-    onSubmit(value);
+    dispatch(addContact(value));
     resetForm();
   };
 
@@ -42,8 +45,4 @@ export const ContactForm = ({ onSubmit }) => {
       </Formik>
     </div>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
 };

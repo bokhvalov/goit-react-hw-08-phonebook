@@ -1,9 +1,12 @@
 import css from './Filter.module.css';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { changeFilter } from 'redux/filterSlice';
 
-export const Filter = ({ onChange }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+
   const handleFilter = evt => {
-    onChange(evt.target.value);
+    dispatch(changeFilter(evt.target.value));
   };
 
   return (
@@ -19,8 +22,4 @@ export const Filter = ({ onChange }) => {
       />
     </div>
   );
-};
-
-Filter.propTypes = {
-  onChange: PropTypes.func,
 };
