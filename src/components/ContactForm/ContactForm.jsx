@@ -1,8 +1,9 @@
 import React from 'react';
 import css from './ContactForm.module.css';
 import { Form, Formik, Field } from 'formik';
-import { addContact } from 'redux/contactsSlice';
+
 import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/operations';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export const ContactForm = () => {
 
   return (
     <div>
-      <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
+      <Formik initialValues={{ name: '', phone: '' }} onSubmit={handleSubmit}>
         <Form className={css.contactForm} autoComplete="off">
           <label className={css.contactForm__label} htmlFor="name">
             Name
@@ -27,14 +28,14 @@ export const ContactForm = () => {
               required
             />
           </label>
-          <label className={css.contactForm__label} htmlFor="Number">
-            Number
+          <label className={css.contactForm__label} htmlFor="phone">
+            Phone
             <Field
               className={css.contactForm__field}
               type="tel"
               pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              name="number"
-              placeholder="Contact Number"
+              name="phone"
+              placeholder="Contact phone"
               required
             />
           </label>

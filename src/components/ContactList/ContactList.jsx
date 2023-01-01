@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContact } from 'redux/operations';
 import css from './ContactList.module.css';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.filter.value);
+  const isLoading = useSelector(state => state.contacts.isLoading)
 
   const onClickDel = evt => {
     dispatch(deleteContact(evt.target.id));
@@ -27,12 +28,16 @@ export const ContactList = () => {
 
   const listElement = visibleContacts.map(contact => (
     <li className={css.contactsItem} key={contact.id}>
-      {contact.name} {contact.number}
+      {contact.name} {contact.phone}
       <button className={css.delBtn} id={contact.id} onClick={onClickDel}>
         Delete
       </button>
     </li>
   ));
 
-  return <ul>{listElement}</ul>;
-};
+  return (
+    <div>
+    {isLoading ? 'Loading...':<ul>{listElement}</ul>}
+    {}
+  </div>
+  )};
