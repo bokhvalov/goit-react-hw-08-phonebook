@@ -1,12 +1,18 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/operations';
+import { deleteContact, fetchContacts } from 'redux/operations';
 import css from './ContactList.module.css';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.filter.value);
-  const isLoading = useSelector(state => state.contacts.isLoading)
+  const isLoading = useSelector(state => state.contacts.isLoading);
+  const error = useSelector(state => state.contacts.error);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const onClickDel = evt => {
     dispatch(deleteContact(evt.target.id));
@@ -37,7 +43,9 @@ export const ContactList = () => {
 
   return (
     <div>
-    {isLoading ? 'Loading...':<ul>{listElement}</ul>}
-    {}
-  </div>
-  )};
+      {error && alert(error)}
+      {isLoading ? 'Loading...' : <ul>{listElement}</ul>}
+      {}
+    </div>
+  );
+};

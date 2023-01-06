@@ -15,7 +15,7 @@ export const ContactForm = () => {
 
   return (
     <div>
-      <Formik initialValues={{ name: '', phone: '' }} onSubmit={handleSubmit}>
+      <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
         <Form className={css.contactForm} autoComplete="off">
           <label className={css.contactForm__label} htmlFor="name">
             Name
@@ -28,14 +28,14 @@ export const ContactForm = () => {
               required
             />
           </label>
-          <label className={css.contactForm__label} htmlFor="phone">
-            Phone
+          <label className={css.contactForm__label} htmlFor="number">
+            Number
             <Field
               className={css.contactForm__field}
               type="tel"
               pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              name="phone"
-              placeholder="Contact phone"
+              name="number"
+              placeholder="Contact number"
               required
             />
           </label>

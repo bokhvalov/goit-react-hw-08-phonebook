@@ -1,0 +1,30 @@
+.registrationForm{
+    width: 250px;
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    font-size: 18px;
+}
+
+
+.registrationForm__label{
+    width: 250px;
+display: flex;
+flex-wrap: wrap;
+flex-direction: column;
+margin-bottom: 15px;
+}
+
+
+.registrationForm__field{
+margin-top: 5px;
+padding: 5px;
+}
+
+.registrationForm__btn{
+    width: 130px;
+    padding: 5px;
+    }

@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
-import { Section } from './Section/Section';
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Filter } from './ContactList/Filter';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchContacts } from 'redux/operations';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import SharedLayout from './SharedLayout/SharedLayout';
+import { Home } from 'pages/Home';
+import { Login } from 'pages/Login/Login';
+import { Contacts } from 'pages/Contacts';
+import { Registration } from 'pages/Registration/Registration';
+import {PrivateRoute} from './PrivateRoute';
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const error = useSelector(state => state.contacts.error)
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-  
   return (
     <div
       style={{
@@ -21,15 +15,27 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      {error && alert(error)}
-      <Section title={'Phonebook'}>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Registration />} />
+          <Route
+            path="contacts"
+            element={
+              <PrivateRoute component={<Contacts />} redirectTo={'/login'} />
+            }
+          />
+        </Route>
+      </Routes>
+      {/* <Section title={'Phonebook'}>
         <ContactForm/>
       </Section>
 
       <Section title={'Contacts'}>
         <Filter  />
         <ContactList/>
-      </Section>
+      </Section> */}
     </div>
   );
 };
