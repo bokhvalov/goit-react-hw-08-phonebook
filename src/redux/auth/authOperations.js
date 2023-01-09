@@ -12,6 +12,8 @@ const token = {
   },
 };
 
+const setToken = token => axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
 export const signUp = createAsyncThunk(
   'auth/signup',
   async (newUserData, thunkAPI) => {
@@ -42,6 +44,10 @@ export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
   async (_, thunkAPI) => {
     try {
+      const state = thunkAPI.getState();
+      const token = state.auth.token;
+      if (!token) return thunkAPI.rejectWithValue('First visit - lack of token in LS');
+      setToken(token);
       const response = await axios.get('/users/current');
       return response.data;
     } catch (e) {
@@ -52,9 +58,9 @@ export const getCurrentUser = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    const response = await axios.post('/users/logout');
+    await axios.post('/users/logout');
     token.unSet();
-    return response.data;
+    return;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.message);
   }

@@ -58,15 +58,18 @@ const authSlice = createSlice({
       state.isRefreshing = true;
     },
     [getCurrentUser.fulfilled](state, action) {
-      state.name = action.payload.user.name;
-      state.email = action.payload.user.email;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
       state.isLoggedIn = true;
       state.isRefreshing = false;
       state.error = null;
     },
     [getCurrentUser.rejected](state, action) {
-      state.isRefreshing = false;
-      state.error = action.payload;
+      state.name = authInitialState.name
+      state.email = authInitialState.email;
+      state.token = authInitialState.token;
+      state.isLoggedIn = authInitialState.isLoggedIn;
+      state.isRefreshing = authInitialState.isRefreshing;
     },
 
     //logout operations
@@ -74,7 +77,12 @@ const authSlice = createSlice({
       state.isRefreshing = true;
     },
     [logout.fulfilled](state) {
-      state = authInitialState;
+      state.name = authInitialState.name
+      state.email = authInitialState.email;
+      state.token = authInitialState.token;
+      state.isLoggedIn = authInitialState.isLoggedIn;
+      state.isRefreshing = authInitialState.isRefreshing;
+      state.error = authInitialState.error;
     },
     [logout.rejected](state, action) {
       state = authInitialState;

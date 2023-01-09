@@ -1,41 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SharedLayout from './SharedLayout/SharedLayout';
 import { Home } from 'pages/Home';
-import { Login } from 'pages/Login/Login';
+import Login from 'pages/Login';
 import { Contacts } from 'pages/Contacts';
-import { Registration } from 'pages/Registration/Registration';
-import {PrivateRoute} from './PrivateRoute';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser } from 'redux/auth/authOperations';
+import Registration from 'pages/Registration';
+import authSelectors from 'redux/auth';
 
 export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        color: '#010101',
-      }}
-    >
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(authSelectors.isRefreshing)
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <div>
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Registration />} />
           <Route
-            path="contacts"
+            path="/login"
+            element={<RestrictedRoute component={Login} redirectTo={'/'} />}
+          />
+          <Route
+            path="/registration"
             element={
-              <PrivateRoute component={<Contacts />} redirectTo={'/login'} />
+              <RestrictedRoute component={Registration} redirectTo={'/'} />
             }
           />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute component={Contacts} redirectTo={'/login'} />
+            }
+          />
+          <Route path="*" element={<Home />} />
         </Route>
       </Routes>
-      {/* <Section title={'Phonebook'}>
-        <ContactForm/>
-      </Section>
-
-      <Section title={'Contacts'}>
-        <Filter  />
-        <ContactList/>
-      </Section> */}
     </div>
   );
 };

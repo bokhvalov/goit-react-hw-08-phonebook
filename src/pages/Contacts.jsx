@@ -1,13 +1,14 @@
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { ContactList } from 'components/ContactsList/ContactList';
-import { Filter } from 'components/Filter/Filter';
+import { Container } from '@mui/material';
+import { ContactForm } from 'pages/Contacts/ContactForm';
+import { ContactList } from 'pages/Contacts/ContactList';
+import { Filter } from 'pages/Contacts/Filter';
 
 export const Contacts = () => {
   return (
-    <div>
+    <Container component="main" sx={{ maxWidth: 500, marginTop: 3 }}>
       <ContactForm />
-      <Filter/>
+      <Filter />
       <ContactList />
-    </div>
+    </Container>
   );
 };
