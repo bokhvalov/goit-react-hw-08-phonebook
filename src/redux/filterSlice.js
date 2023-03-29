@@ -4,6 +4,8 @@ const filterInitialState  = {
   value:''
 };
 
+
+
 const filterSlice = createSlice({
   name: 'contacts',
   initialState: filterInitialState,
